@@ -1,10 +1,16 @@
 package _02_Chat_Application;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import _01_Intro_To_Sockets.server.ServerGreeter;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /*
  * Using the Click_Chat example, write an application that allows a server computer to chat with a client computer.
@@ -12,52 +18,53 @@ import javax.swing.JLabel;
 
 public class ChatApp {
 
+	Server server;
+	Client client;
+	int port;
+
+	public ChatApp(int port) {
+
+		this.port = port;
+		int asdf = JOptionPane.showConfirmDialog(null, "Do you want to host a connection?", "Discord 2",
+				JOptionPane.YES_NO_OPTION);
+
+		if (asdf == JOptionPane.YES_OPTION) {
+
+			server = new Server(21710);
+			server.start();
+
+		} else {
+
+			Client client = new Client("localhost", 21710);
+			client.start();
+
+		}
+	}
+
 	public static void initializeGUI() {
-		
-		JFrame frame = new JFrame();
-//		JPanel panel = new JPanel();
-		JButton send = new JButton();
-		
-		
-		frame.setTitle("poop");
-		send.setText("asdf");
-		
-//		panel.add(send);
-//		frame.add(panel);
-		frame.add(send);
-		frame.pack();
-		frame.setVisible(true);
-		
-		send.addActionListener((ActionEvent e)-> {
-			
-			System.out.println("asdf");
-			
-		});
-		
-	}
-	
 
-	
-	public static void initializeNetStuff() {
-		
-		Server server = new Server(21710);
-		Client client = new Client("localhost", 21710);
-
-		System.out.println("asdf");
-		
-		Thread serverThread = new Thread(()-> server.start());
-		serverThread.start();
-		System.out.println("asdf");
-		client.start();
-		System.out.println("asdf");
-		
 	}
-	
+
+//	public static void initializeNetStuff() {
+//		
+//		Server server = new Server(21710);
+//		Client client = new Client("localhost", 21710);
+//
+//		System.out.println("asdf");
+//		
+//		Thread serverThread = new Thread(()-> server.start());
+//		serverThread.start();
+//		System.out.println("asdf");
+//		client.start();
+//		System.out.println("asdf");
+//		
+//	}
+
 	public static void main(String[] args) {
 
-		initializeGUI();
-		
-		
+		ChatApp chatApp = new ChatApp(21710);
+//		initializeNetStuff();
+
 	}
 
 }
