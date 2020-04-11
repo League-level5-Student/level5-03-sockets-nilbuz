@@ -1,5 +1,6 @@
 package _02_Chat_Application;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -12,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Client {
 
@@ -25,7 +27,9 @@ public class Client {
 	JFrame frame;
 	JButton send;
 	JLabel label;
-
+	JTextField chatfield;
+	JTextField inputfield;
+	
 	public Client(String ip, int port) {
 
 		this.ip = ip;
@@ -39,19 +43,26 @@ public class Client {
 		frame = new JFrame();
 		send = new JButton();
 		label = new JLabel();
-
+		chatfield = new JTextField(200);
+		inputfield = new JTextField(200);
+		
 		frame.setTitle("Client");
 		send.setText("Send Message");
 
 		send.addActionListener((ActionEvent e) -> {
 			String msg = JOptionPane.showInputDialog("Type your message here.");
-
+			sendMessage(msg);
 		});
 
 		panel.add(send);
+//		panel.add(label);
+		panel.add(chatfield);
+		panel.add(inputfield);
 		frame.add(panel);
-		frame.setBounds(300, 500, 300, 100);
+		frame.setBounds(100, 600, 300, 150);
 		frame.setVisible(true);
+		frame.setAlwaysOnTop(true);
+		
 		run();
 	}
 
@@ -62,12 +73,14 @@ public class Client {
 			clientOS = new DataOutputStream(socket.getOutputStream());
 			clientIS = new DataInputStream(socket.getInputStream());
 
-			clientOS.writeUTF("connected");
+			clientOS.writeUTF("client connected");
 			System.out.println(clientIS.readUTF());
 
-			while (socket.isConnected()) {
+			System.out.println("asdfasdfasdfasdfdsddfsfadasfdsfd");
 
-				label.setText(readMessage());
+			while (socket.isConnected()) {
+				System.out.println("client: msg recieved");
+				chatfield.setText(label.getText() + "\n" + readMessage());
 			}
 
 		} catch (IOException e1) {

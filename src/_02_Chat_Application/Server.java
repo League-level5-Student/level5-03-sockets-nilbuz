@@ -1,6 +1,10 @@
 package _02_Chat_Application;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -16,8 +20,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-public class Server {
+public class Server implements KeyListener {
 
 	int port;
 	ServerSocket serverSocket;
@@ -30,6 +35,8 @@ public class Server {
 	JPanel panel;
 	JButton send;
 	JLabel label;
+	JTextField chatfield;
+	JTextField inputfield;
 
 	public Server(int port) {
 
@@ -44,27 +51,43 @@ public class Server {
 		panel = new JPanel();
 		send = new JButton();
 		label = new JLabel();
-
-		frame.setTitle("Server");
-		send.setText("Send Message");
+		chatfield = new JTextField(200);
+		inputfield = new JTextField(200);
+		
+//		BorderLayout layout = new BorderLayout();
+//		panel.setLayout(layout);
+		
 
 		send.addActionListener((ActionEvent e) -> {
 			String msg = JOptionPane.showInputDialog("Type your message here.");
 			sendMessage(msg);
 		});
 
-		panel.add(label);
-		panel.add(send);
+		chatfield.setEditable(false);
+		frame.setTitle("Server");
+		send.setText("Send Message");
+		inputfield.setEditable(true);
+		panel.setLayout(new GridLayout(4,1));
+		
+		
+		panel.add(chatfield);
+//		panel.add(label);
+		panel.add(inputfield);
 		frame.add(panel);
-		frame.setBounds(700, 500, 300, 100);
+		panel.add(send);
+		panel.addKeyListener(this);
+		frame.setBounds(100, 300, 300, 150);
 		frame.setVisible(true);
+		frame.setAlwaysOnTop(true);
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+		
 		run();
 	}
 
 	public void run() {
 
 		try {
-			System.out.println(port);
+			System.out.println("1");
 
 			serverSocket = new ServerSocket(port);
 			System.out.println("2");
@@ -74,12 +97,16 @@ public class Server {
 			System.out.println("4");
 			serverIS = new DataInputStream(connection.getInputStream());
 			System.out.println("5");
-			serverOS.writeUTF("asdf");
+		
 			System.out.println(serverIS.readUTF());
-
+			
 			while (running) {
 
-				label.setText(readMessage());
+				System.out.println("server: msg recieved");
+//				label.setText(readMessage());
+				
+				chatfield.setText(label.getText() + "\n" + readMessage());
+				
 
 			}
 
@@ -113,5 +140,29 @@ public class Server {
 		}
 
 		return "no messages";
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		System.out.println("key presed");
+		
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			System.out.println("enter pressed");
+			sendMessage(inputfield.getText());
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
