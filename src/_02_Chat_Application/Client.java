@@ -2,6 +2,8 @@ package _02_Chat_Application;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -13,9 +15,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class Client {
+public class Client implements KeyListener {
 
 	String ip;
 	int port;
@@ -27,9 +30,9 @@ public class Client {
 	JFrame frame;
 	JButton send;
 	JLabel label;
-	JTextField chatfield;
-	JTextField inputfield;
-	
+	JTextArea chatfield;
+	JTextArea inputfield;
+
 	public Client(String ip, int port) {
 
 		this.ip = ip;
@@ -39,13 +42,13 @@ public class Client {
 
 	public void start() {
 
-		panel = new JPanel();
 		frame = new JFrame();
+		panel = new JPanel();
 		send = new JButton();
 		label = new JLabel();
-		chatfield = new JTextField(200);
-		inputfield = new JTextField(200);
-		
+		chatfield = new JTextArea(300, 300);
+		inputfield = new JTextArea(300, 100);
+
 		frame.setTitle("Client");
 		send.setText("Send Message");
 
@@ -54,15 +57,23 @@ public class Client {
 			sendMessage(msg);
 		});
 
-		panel.add(send);
-//		panel.add(label);
+		chatfield.setEditable(false);
+		frame.setTitle("Client");
+		send.setText("Send Message");
+		inputfield.setEditable(true);
+		panel.setLayout(new GridLayout(3, 1));
+
 		panel.add(chatfield);
+//		panel.add(label);
 		panel.add(inputfield);
 		frame.add(panel);
-		frame.setBounds(100, 600, 300, 150);
+		panel.add(send);
+		panel.addKeyListener(this);
+		frame.setBounds(100, 500, 300, 400);
 		frame.setVisible(true);
 		frame.setAlwaysOnTop(true);
-		
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+
 		run();
 	}
 
@@ -80,7 +91,7 @@ public class Client {
 
 			while (socket.isConnected()) {
 				System.out.println("client: msg recieved");
-				chatfield.setText(label.getText() + "\n" + readMessage());
+				chatfield.setText(chatfield.getText() + "\n" + readMessage());
 			}
 
 		} catch (IOException e1) {
@@ -111,6 +122,29 @@ public class Client {
 		}
 
 		return "no messages";
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		System.out.println("key presed");
+
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			System.out.println("enter pressed");
+			sendMessage(inputfield.getText());
+		}
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+
 	}
 
 }
