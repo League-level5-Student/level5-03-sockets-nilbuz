@@ -35,7 +35,7 @@ public class Server implements KeyListener {
 	JFrame frame;
 	JPanel panel;
 	JButton send;
-	JLabel label;
+//	JLabel label;
 	JTextArea chatfield;
 	JTextArea inputfield;
 
@@ -51,12 +51,11 @@ public class Server implements KeyListener {
 		frame = new JFrame();
 		panel = new JPanel();
 		send = new JButton();
-		label = new JLabel();
+//		label = new JLabel();
 		chatfield = new JTextArea(300,300);
 		inputfield = new JTextArea(300,100);
 		
-//		BorderLayout layout = new BorderLayout();
-//		panel.setLayout(layout);
+
 		
 
 		send.addActionListener((ActionEvent e) -> {
@@ -68,14 +67,13 @@ public class Server implements KeyListener {
 		frame.setTitle("Server");
 		send.setText("Send Message");
 		inputfield.setEditable(true);
-		panel.setLayout(new GridLayout(3,1));
+		panel.setLayout(new GridLayout(2,1));
 		panel.setFocusable(true);
 		frame.setFocusable(true);
 		
 		
 		panel.add(chatfield);
-//		panel.add(label);
-		panel.add(inputfield);
+//		panel.add(inputfield);
 		frame.add(panel);
 		panel.add(send);
 		frame.addKeyListener(this);
@@ -147,6 +145,8 @@ public class Server implements KeyListener {
 
 	
 	public void keyPressed(KeyEvent e) {
+		
+		//doesn't work
 		
 		System.out.println("key presed");
 		

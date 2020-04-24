@@ -29,7 +29,7 @@ public class Client implements KeyListener {
 	JPanel panel;
 	JFrame frame;
 	JButton send;
-	JLabel label;
+//	JLabel label;
 	JTextArea chatfield;
 	JTextArea inputfield;
 
@@ -41,16 +41,13 @@ public class Client implements KeyListener {
 	}
 
 	public void start() {
-
 		frame = new JFrame();
 		panel = new JPanel();
 		send = new JButton();
-		label = new JLabel();
-		chatfield = new JTextArea(300, 300);
-		inputfield = new JTextArea(300, 100);
-
-		frame.setTitle("Client");
-		send.setText("Send Message");
+//		label = new JLabel();
+		chatfield = new JTextArea(300,300);
+		inputfield = new JTextArea(300,100);
+			
 
 		send.addActionListener((ActionEvent e) -> {
 			String msg = JOptionPane.showInputDialog("Type your message here.");
@@ -61,19 +58,21 @@ public class Client implements KeyListener {
 		frame.setTitle("Client");
 		send.setText("Send Message");
 		inputfield.setEditable(true);
-		panel.setLayout(new GridLayout(3, 1));
-
+		panel.setLayout(new GridLayout(2,1));
+		panel.setFocusable(true);
+		frame.setFocusable(true);
+		
+		
 		panel.add(chatfield);
-//		panel.add(label);
-		panel.add(inputfield);
+//		panel.add(inputfield);
 		frame.add(panel);
 		panel.add(send);
-		panel.addKeyListener(this);
-		frame.setBounds(100, 500, 300, 400);
+		frame.addKeyListener(this);
+		frame.setBounds(100, 600, 300, 400);
 		frame.setVisible(true);
 		frame.setAlwaysOnTop(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-
+		
 		run();
 	}
 
